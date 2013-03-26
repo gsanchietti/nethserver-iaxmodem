@@ -38,3 +38,20 @@ event_actions($event,
               'nethserver-iaxmodem-uninstall' => '02',
               'runlevel-adjust' => '50');
 
+#--------------------------------------------------
+# actions for nethserver-hylafax-update event
+#--------------------------------------------------
+
+my $event = "nethserver-hylafax-update";
+
+event_actions($event, 'nethserver-iaxmodem-hylasetup' => '30');
+
+
+#--------------------------------------------------
+# actions for nethserver-hylafax-save event
+#--------------------------------------------------
+
+my $event = "nethserver-hylafax-save";
+
+event_actions($event, 'nethserver-iaxmodem-hylasetup' => '30');
+

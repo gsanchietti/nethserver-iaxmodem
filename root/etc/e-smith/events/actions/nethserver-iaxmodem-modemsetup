@@ -21,29 +21,15 @@
 #
 
 use esmith::DB::db;
-use esmith::event;
-use NethServer::Migrate;
-use File::Copy;
 use strict;
 
 my $modemsDb = esmith::DB::db->open('modems') || die("Could not open destination modems db\n");
 
+# cleanup iaxmodem configuration
 my @configs = glob('/etc/iaxmodem/*');
 unlink @configs;
 
-my $template = "device     %s
-owner      uucp:uucp
-mode       660
-port       4570
-refresh    300
-server     %s
-peername   %s
-secret     %s
-cidname    %s
-cidnumber  %s
-codec      slinear
-";
-
+my $port = 4570;
 foreach my $modem ($modemsDb->get_all_by_prop('type' => 'iax')) {
     my $peername = $modem->prop('extension') || "";
     next unless ($peername ne "");
@@ -52,9 +38,40 @@ foreach my $modem ($modemsDb->get_all_by_prop('type' => 'iax')) {
     my $secret = $modem->prop('password') || "";
     my $cidname = $modem->prop('cidName') || "";
     my $cidnumber = $modem->prop('cidNumber') || "";
-    my $content = sprintf($template,$device,$server,$peername,$secret,$cidname,$cidnumber);
+    generate_iaxmodem_conf($peername, $device, $server, $secret, $cidname, $cidnumber,$port);
+    $port++;
+}
+
+
+# Create iax modem configuration file
+sub generate_iaxmodem_conf()
+{
+    my $peername = shift;
+    my $device = shift;
+    my $server = shift;
+    my $secret = shift;
+    my $cidname = shift;
+    my $cidnumber = shift;
+    my $port = shift;
+
+    my $template = "device     %s
+owner      uucp:uucp
+mode       660
+port       %s
+refresh    300
+server     %s
+peername   %s
+secret     %s
+cidname    %s
+cidnumber  %s
+codec      slinear
+";
+    my $content = sprintf($template,$device,$port,$server,$peername,$secret,$cidname,$cidnumber);
     my $file = "/etc/iaxmodem/ttyIAX".$peername;
-    open (FILE, ">$file");
+    open (FILE, ">$file") or die "Cannot create file: $file\n";
     print FILE $content;
     close (FILE);
 }
+
+exit 0;
+
