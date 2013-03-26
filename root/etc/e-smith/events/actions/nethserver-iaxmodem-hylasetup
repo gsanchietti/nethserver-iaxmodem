@@ -1,0 +1,95 @@
+#!/usr/bin/perl
+
+#
+# Copyright (C) 2013 Nethesis S.r.l.
+# http://www.nethesis.it - support@nethesis.it
+# 
+# This script is part of NethServer.
+# 
+# NethServer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License,
+# or any later version.
+# 
+# NethServer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with NethServer.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+use esmith::DB::db;
+use esmith::templates;
+use strict;
+
+my $modemsDb = esmith::DB::db->open('modems') || die("Could not open destination modems db\n");
+
+# cleanup hylafax modem configuration files
+my @hyla_configs =glob("/var/spool/hylafax/etc/config.ttyIAX*");
+unlink @hyla_configs;
+
+foreach my $modem ($modemsDb->get_all_by_prop('type' => 'iax')) {
+    my $peername = $modem->prop('extension') || "";
+    next unless ($peername ne "");
+    generate_hylafax_conf($peername);
+}
+
+
+# Create Hylafax configuration file
+sub generate_hylafax_conf()
+{
+    my $peername = shift;   
+    my $file = "/var/spool/hylafax/etc/config.ttyIAX$peername";
+    my $recipients = esmith::templates::processTemplate({
+        'TEMPLATE_PATH' => '/var/spool/hylafax/etc/config.nethesis',
+        'OUTPUT_FILENAME' => $file
+    });
+    
+    open MODEM, ">>$file" or die "Cannot create file: $file\n";
+    print MODEM <<END
+ModemType:              Class1      # use this to supply a hint
+
+ModemResetCmds:         "ATH1\\nAT+VCID=1"
+ModemReadyCmds:         ATH0
+
+# Enabling this will use the hfaxd-protocol to set Caller*ID
+#
+ModemSetOriginCmd:     AT+VSID="%s","%d"
+
+Class1AdaptRecvCmd:     AT+FAR=1
+Class1TMConnectDelay:   400     # counteract quick CONNECT response
+
+#
+# If you have trouble with V.17 receiving or sending,
+# you may want to enable one of these, respectively.
+#
+#Class1RMQueryCmd:      "!24,48,72,96"  # enable this to disable V.17 receiving
+#Class1TMQueryCmd:      "!24,48,72,96"  # enable this to disable V.17 sending
+
+#
+# The pty does not support changing parity.
+#
+PagerTTYParity:		none
+
+# Uncomment DATE and TIME if you really want them, but you probably don't.
+#CallIDPattern:          "DATE="
+#CallIDPattern:          "TIME="
+CallIDPattern:          "NMBR="
+CallIDPattern:          "NAME="
+CallIDPattern:		"ANID="
+#CallIDPattern:          "USER="	# username provided by call
+#CallIDPattern:          "PASS="	# password provided by call
+#CallIDPattern:          "CDID="	# DID context in call
+CallIDPattern:          "NDID="
+#CallIDAnswerLength:	4
+
+END
+;
+    close MODEM;
+       
+}
+
+exit 0;
+
