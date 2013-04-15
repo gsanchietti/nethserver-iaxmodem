@@ -10,10 +10,7 @@ use File::Path;
 
 my $event = "nethserver-iaxmodem-update";
 
-event_actions($event,
-              'initialize-default-databases' => '00',
-              'nethserver-iaxmodem-conf' => '02',
-              'runlevel-adjust' => '40');
+event_actions($event, 'initialize-default-databases' => '00');
 
 event_services($event, 'iaxmodem' => 'restart');
 
@@ -28,15 +25,6 @@ event_actions($event, 'nethserver-iaxmodem-modemsetup' => 20);
 
 event_services($event, 'iaxmodem' => 'restart');
 
-#--------------------------------------------------
-# actions for nethserver-iaxmodem-uninstall event
-#--------------------------------------------------
-
-$event = "nethserver-iaxmodem-uninstall";
-
-event_actions($event,
-              'nethserver-iaxmodem-uninstall' => '02',
-              'runlevel-adjust' => '50');
 
 #--------------------------------------------------
 # actions for nethserver-hylafax-update event
