@@ -45,6 +45,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(0644,root,root)
 
 %changelog
-* Tue Mar 26 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.1-1.ns6
+* Tue Apr 30 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.1-1.ns6
+• Rebuild for automatic package handling. #1870
+
+* Tue Mar 26 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.0-1.ns6
 - First release #1784
 
