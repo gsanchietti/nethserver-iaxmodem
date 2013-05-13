@@ -58,7 +58,7 @@ sub generate_iaxmodem_conf()
 owner      uucp:uucp
 mode       660
 port       %s
-refresh    300
+refresh    60
 server     %s
 peername   %s
 secret     %s
