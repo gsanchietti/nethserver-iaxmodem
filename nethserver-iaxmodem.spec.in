@@ -28,6 +28,7 @@ NethServer module to configure IAX modems
 %postun
 
 %build
+%{makedocs}
 perl createlinks
 
 %install
