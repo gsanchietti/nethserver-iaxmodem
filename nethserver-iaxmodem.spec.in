@@ -46,6 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(0644,root,root)
 
 %changelog
+* Wed Aug 20 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.3-1.ns6
+- Missing Italian translation - Bug #2706 [NethServer]
+
 * Wed Feb 05 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.2-1.ns6
 - Lib: synchronize service status prop and chkconfig - Feature #2067 [NethServer]
 - Update all inline help documentation - Task #1780 [NethServer]
