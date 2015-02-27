@@ -45,7 +45,7 @@ class IaxModem extends \Nethgui\Controller\TableController
 
         $parameterSchema = array(
             array('name', Validate::USERNAME, \Nethgui\Controller\Table\Modify::KEY),
-            array('server', Validate::IPv4, \Nethgui\Controller\Table\Modify::FIELD),
+            array('server', Validate::HOSTADDRESS, \Nethgui\Controller\Table\Modify::FIELD),
             array('extension', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
             array('password', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
             array('cidNumber', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
