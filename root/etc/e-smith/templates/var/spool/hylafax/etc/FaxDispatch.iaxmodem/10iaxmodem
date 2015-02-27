@@ -1,0 +1,15 @@
+{
+    use esmith::DB::db;
+    my $modemsDb = esmith::DB::db->open('modems') || die("Could not open destination modems db\n");
+    my @modems = $modemsDb->get_all_by_prop('type' => 'iax');
+
+    $OUT.="case \"\$DEVICE\" in\n";
+    foreach my $modem (@modems) {
+        my $peername = $modem->prop('extension') || next;
+        my $mail = $modem->prop('mail') || next;
+        my $device = "/dev/ttyIAX".$peername;
+        $OUT.="   ttyIAX$peername)  SENDTO='$mail';;\n";
+    }
+    $OUT.="esac \n";
+
+}
