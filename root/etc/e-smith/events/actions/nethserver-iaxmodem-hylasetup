@@ -34,8 +34,39 @@ foreach my $modem ($modemsDb->get_all_by_prop('type' => 'iax')) {
     my $peername = $modem->prop('extension') || "";
     next unless ($peername ne "");
     generate_hylafax_conf($peername);
+    generate_faxgetty_conf($peername);
 }
 
+# stop all faxgetty-ttyIAX* services and remove relative files
+my @files = </etc/init/faxgetty-ttyIAX*.conf>;
+foreach my $file (@files) {
+   my @tmp = split(/\./,basename($file));
+   system("/sbin/stop ".$tmp[0]);
+   unlink($file);
+}
+
+
+sub generate_faxgetty_conf()
+{
+    my $FaxDevice = shift;
+    my $upstart_file="/etc/init/faxgetty-$FaxDevice.conf";
+    my $doc = <<END
+start on runlevel [2345]
+
+stop on runlevel [S016]
+
+respawn
+exec /usr/sbin/faxgetty $FaxDevice
+END
+;
+
+    open (FILE, ">>$upstart_file");
+    print FILE $doc;
+    close (FILE);
+
+    # start new upstart file
+    system("/sbin/start faxgetty-$FaxDevice");
+}
 
 # Create Hylafax configuration file
 sub generate_hylafax_conf()
