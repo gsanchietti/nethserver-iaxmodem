@@ -12,3 +12,4 @@ $L['cidNumber_label'] = 'Caller number';
 $L['extension_label'] = 'Extension'; 
 $L['name_label'] = 'Name'; 
 $L['server_label'] = 'Server IP'; 
+$L['mail_label'] = 'Mail'; 

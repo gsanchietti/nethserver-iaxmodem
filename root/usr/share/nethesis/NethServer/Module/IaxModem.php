@@ -37,22 +37,20 @@ class IaxModem extends \Nethgui\Controller\TableController
     {
         $columns = array(
             'Key',
-            'server',
             'extension',
-            'password',
             'cidNumber',
-            'cidName',
-    #        'device',
+            'mail',
             'Actions'
         );
 
         $parameterSchema = array(
             array('name', Validate::USERNAME, \Nethgui\Controller\Table\Modify::KEY),
             array('server', Validate::IPv4, \Nethgui\Controller\Table\Modify::FIELD),
-            array('extension', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
-            array('password', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
-            array('cidNumber', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
-            array('cidName', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
+            array('extension', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
+            array('password', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
+            array('cidNumber', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
+            array('cidName', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
+            array('mail', Validate::EMAIL, \Nethgui\Controller\Table\Modify::FIELD),
         );
 
         $this
@@ -67,9 +65,19 @@ class IaxModem extends \Nethgui\Controller\TableController
         parent::initialize();
     }
 
+    public function prepareViewForColumnExtension(\Nethgui\Controller\Table\Read $action, \Nethgui\View\ViewInterface $view, $key, $values, &$rowMetadata)
+    {
+        return $values['extension']."@".$values['server'];
+    }
+
+    public function prepareViewForColumnCidNumber(\Nethgui\Controller\Table\Read $action, \Nethgui\View\ViewInterface $view, $key, $values, &$rowMetadata)
+    {
+        return $values['cidName']." (".$values['cidNumber'].")";
+    }
+
     public function onParametersSaved(\Nethgui\Module\ModuleInterface $currentAction, $changes, $parameters)
     {
-        $this->getPlatform()->signalEvent('nethserver-iaxmodem-save@post-process');
+        $this->getPlatform()->signalEvent('nethserver-iaxmodem-save');
     }
 
 }

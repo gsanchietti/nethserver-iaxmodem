@@ -13,6 +13,7 @@ echo $view->panel()
     ->insert($view->textInput('extension'))
     ->insert($view->textInput('password'))
     ->insert($view->textInput('cidNumber'))
-    ->insert($view->textInput('cidName'));
+    ->insert($view->textInput('cidName'))
+    ->insert($view->textInput('mail'));
 
 echo $view->buttonList($view::BUTTON_SUBMIT | $view::BUTTON_CANCEL);
