@@ -1,7 +1,7 @@
 Summary: NethServer module to configure IAX modems
 Name: nethserver-iaxmodem
 Version: 1.0.3
-Release: 1
+Release: 1%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
