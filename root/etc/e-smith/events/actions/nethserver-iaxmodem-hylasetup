@@ -30,13 +30,6 @@ my $modemsDb = esmith::DB::db->open('modems') || die("Could not open destination
 my @hyla_configs =glob("/var/spool/hylafax/etc/config.ttyIAX*");
 unlink @hyla_configs;
 
-foreach my $modem ($modemsDb->get_all_by_prop('type' => 'iax')) {
-    my $peername = $modem->prop('extension') || "";
-    next unless ($peername ne "");
-    generate_hylafax_conf($peername);
-    generate_faxgetty_conf($peername);
-}
-
 # stop all faxgetty-ttyIAX* services and remove relative files
 my @files = </etc/init/faxgetty-ttyIAX*.conf>;
 foreach my $file (@files) {
@@ -45,10 +38,20 @@ foreach my $file (@files) {
    unlink($file);
 }
 
+foreach my $modem ($modemsDb->get_all_by_prop('type' => 'iax')) {
+    my $peername = $modem->prop('extension') || "";
+    my $cidName = $modem->prop('cidName') || "";
+    my $cidNumber = $modem->prop('cidNumber') || "";
+    next unless ($peername ne "");
+    generate_hylafax_conf($peername,$cidName,$cidNumber);
+    generate_faxgetty_conf($peername);
+}
 
 sub generate_faxgetty_conf()
 {
-    my $FaxDevice = shift;
+    
+    my $FaxDevice = shift;   
+    $FaxDevice = "ttyIAX" . $FaxDevice;
     my $upstart_file="/etc/init/faxgetty-$FaxDevice.conf";
     my $doc = <<END
 start on runlevel [2345]
