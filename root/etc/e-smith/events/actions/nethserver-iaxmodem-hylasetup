@@ -22,6 +22,7 @@
 
 use esmith::DB::db;
 use esmith::templates;
+use File::Basename;
 use strict;
 
 my $modemsDb = esmith::DB::db->open('modems') || die("Could not open destination modems db\n");
@@ -42,8 +43,9 @@ foreach my $modem ($modemsDb->get_all_by_prop('type' => 'iax')) {
     my $peername = $modem->prop('extension') || "";
     my $cidName = $modem->prop('cidName') || "";
     my $cidNumber = $modem->prop('cidNumber') || "";
+    my $mode = $modem->prop('mode') || "";
     next unless ($peername ne "");
-    generate_hylafax_conf($peername,$cidName,$cidNumber);
+    generate_hylafax_conf($peername,$cidName,$cidNumber,$mode);
     generate_faxgetty_conf($peername);
 }
 
@@ -75,6 +77,9 @@ END
 sub generate_hylafax_conf()
 {
     my $peername = shift;   
+    my $cidName = shift;
+    my $cidNumber = shift;
+    my $mode = shift;
     my $file = "/var/spool/hylafax/etc/config.ttyIAX$peername";
     my $recipients = esmith::templates::processTemplate({
         'TEMPLATE_PATH' => '/var/spool/hylafax/etc/config.nethesis',
@@ -121,8 +126,32 @@ CallIDPattern:          "NDID="
 
 END
 ;
+
+#if modem is receive only
+if ($mode eq "receive" ){
+print MODEM <<END
+#Receive only modem
+ModemReadyState:        D
+END
+;
+}
+#if modem is send only
+if ($mode eq "send" ){
+print MODEM <<END
+#Send only modem
+RingsBeforeAnswer:        0
+END
+;
+}
+
     close MODEM;
-       
+    if ($cidName ne ''){
+        system("/bin/sed -i 's/^LocalIdentifier:.*\$/LocalIdentifier:    \"$cidName\"/g' $file");
+        system("/bin/sed -i 's/^FaxName:.*\$/FaxName:    \"$cidName\"/g' $file");
+    }
+    if ($cidNumber ne ''){
+        system("/bin/sed -i 's/^FAXNumber:.*\$/FAXNumber:    $cidNumber/g' $file");
+    }   
 }
 
 exit 0;
