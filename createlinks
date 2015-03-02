@@ -53,10 +53,11 @@ event_templates($event, qw(
 # actions for nethserver-hylafax-save event
 #--------------------------------------------------
 
-my $event = "nethserver-hylafax-save";
+my $event = "nethserver-iaxmodem-save";
 
 event_actions($event, 'nethserver-iaxmodem-hylasetup' => '30');
 
 event_templates($event, qw(
     /var/spool/hylafax/etc/FaxDispatch.iaxmodem
 ));
+
