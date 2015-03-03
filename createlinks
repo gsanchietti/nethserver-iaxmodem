@@ -27,6 +27,7 @@ event_templates($event, qw(
 $event = "nethserver-iaxmodem-save";
 
 event_actions($event, 'nethserver-iaxmodem-modemsetup' => 20);
+event_actions($event, 'nethserver-iaxmodem-hylasetup' => '30');
 
 event_services($event, 'iaxmodem' => 'restart');
 
@@ -53,7 +54,7 @@ event_templates($event, qw(
 # actions for nethserver-hylafax-save event
 #--------------------------------------------------
 
-my $event = "nethserver-iaxmodem-save";
+my $event = "nethserver-hylafax-save";
 
 event_actions($event, 'nethserver-iaxmodem-hylasetup' => '30');
 
