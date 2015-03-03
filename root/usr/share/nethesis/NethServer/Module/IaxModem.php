@@ -42,6 +42,7 @@ class IaxModem extends \Nethgui\Controller\TableController
             'mail',
             'Actions'
         );
+        $modeValidator = $this->getPlatform()->createValidator()->memberOf(array('send','receive','both'));
 
         $parameterSchema = array(
             array('name', Validate::USERNAME, \Nethgui\Controller\Table\Modify::KEY),
@@ -51,6 +52,7 @@ class IaxModem extends \Nethgui\Controller\TableController
             array('cidNumber', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
             array('cidName', Validate::NOTEMPTY, \Nethgui\Controller\Table\Modify::FIELD),
             array('mail', Validate::EMAIL, \Nethgui\Controller\Table\Modify::FIELD),
+            array('mode', $modeValidator, \Nethgui\Controller\Table\Modify::FIELD)
         );
 
         $this
@@ -64,6 +66,13 @@ class IaxModem extends \Nethgui\Controller\TableController
 
         parent::initialize();
     }
+
+    public function bind(\Nethgui\Controller\RequestInterface $request)
+    {
+        $this->getAction('create')->setDefaultValue('mode','both');
+        parent::bind($request);
+    }
+
 
     public function prepareViewForColumnExtension(\Nethgui\Controller\Table\Read $action, \Nethgui\View\ViewInterface $view, $key, $values, &$rowMetadata)
     {
