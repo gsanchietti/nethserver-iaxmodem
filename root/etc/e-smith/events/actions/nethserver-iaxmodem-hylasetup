@@ -127,28 +127,6 @@ CallIDPattern:          "NDID="
 END
 ;
 
-    #if modem is receive only
-    if ($mode eq "receive" ){
-        print MODEM <<END
-#Receive only modem
-ModemReadyState:        D
-RingsBeforeAnswer:      1
-END
-;
-    } elsif ($mode eq "send" ){
-        print MODEM <<END
-#Send only modem
-RingsBeforeAnswer:        0
-END
-;
-    } else {
-        print MODEM <<END
-#Send/receive modem
-RingsBeforeAnswer:        1
-END
-;
-    }
-
     close MODEM;
     if ($cidName ne ''){
         system("/bin/sed -i 's/^LocalIdentifier:.*\$/LocalIdentifier:    \"$cidName\"/g' $file");
@@ -157,6 +135,16 @@ END
     if ($cidNumber ne ''){
         system("/bin/sed -i 's/^FAXNumber:.*\$/FAXNumber:    $cidNumber/g' $file");
     }   
+    #if modem is receive only
+    if ($mode eq "receive" ){
+        #Receive only modem
+        open(my $fh, '>>', $file) or die "Could not open file '$file' $!";
+        print $fh "ModemReadyState:        D\n";
+	close $fh;
+    } elsif ($mode eq "send" ){
+	#Send only modem
+        system("/bin/sed -i 's/^RingsBeforeAnswer:.*\$/RingsBeforeAnswer:    0/g' $file");
+    } 
 }
 
 exit 0;
