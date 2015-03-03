@@ -28,4 +28,7 @@ Caller ID
 
 Caller Name
     Caller name shown in the outgoing faxes.
-
+Mail 
+    Email address where incoming faxes are sent
+Mode
+    Define if modem is used to receive and send faxes, only send, or only receive

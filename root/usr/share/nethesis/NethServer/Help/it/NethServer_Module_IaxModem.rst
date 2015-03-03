@@ -23,4 +23,7 @@ Numero chiamante
     Numero chiamante mostrato nei FAX in uscita.
 Nome chiamante
     Nome chiamante mostrato nei FAX in uscita.
-
+Mail
+    Indirizzo email a cui verranno inviati i fax in arrivo
+Modalità
+    Stabilisce se il modem verrè utilizzato per inviare e ricevere FAX, solo per inviare, o solo per ricevere
