@@ -127,22 +127,27 @@ CallIDPattern:          "NDID="
 END
 ;
 
-#if modem is receive only
-if ($mode eq "receive" ){
-print MODEM <<END
+    #if modem is receive only
+    if ($mode eq "receive" ){
+        print MODEM <<END
 #Receive only modem
 ModemReadyState:        D
+RingsBeforeAnswer:      1
 END
 ;
-}
-#if modem is send only
-if ($mode eq "send" ){
-print MODEM <<END
+    } elsif ($mode eq "send" ){
+        print MODEM <<END
 #Send only modem
 RingsBeforeAnswer:        0
 END
 ;
-}
+    } else {
+        print MODEM <<END
+#Send/receive modem
+RingsBeforeAnswer:        1
+END
+;
+    }
 
     close MODEM;
     if ($cidName ne ''){
