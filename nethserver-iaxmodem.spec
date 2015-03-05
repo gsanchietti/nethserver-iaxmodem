@@ -1,6 +1,6 @@
 Summary: NethServer module to configure IAX modems
 Name: nethserver-iaxmodem
-Version: 1.0.3
+Version: 1.1.0
 Release: 1%{?dist}
 License: GPL
 Group: Networking/Daemons
@@ -46,6 +46,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(0644,root,root)
 
 %changelog
+* Thu Mar 05 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.0-1
+- IAXmodem server hostname (not only ip) - Enhancement #3002 [NethServer]
+- IAXmodem: configure mode for each modem - Enhancement #2761 [NethServer]
+- IAXmodem: configure email address for each modem - Feature #2760 [NethServer]
+
 * Wed Aug 20 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.3-1.ns6
 - Missing Italian translation - Bug #2706 [NethServer]
 
