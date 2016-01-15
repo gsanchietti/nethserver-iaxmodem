@@ -10,7 +10,6 @@ BuildArch: noarch
 Requires: iaxmodem
 Requires: nethserver-hylafax
 BuildRequires: nethserver-devtools
-AutoReq: no
 
 %description
 NethServer module to configure IAX modems
@@ -32,18 +31,15 @@ NethServer module to configure IAX modems
 perl createlinks
 
 %install
-/bin/rm -rf $RPM_BUILD_ROOT
-(cd root   ; /usr/bin/find . -depth -print | /bin/cpio -dump $RPM_BUILD_ROOT)
-rm -f %{name}-%{version}-%{release}-filelist
-/sbin/e-smith/genfilelist $RPM_BUILD_ROOT \
-   $RPM_BUILD_ROOT > %{name}-%{version}-%{release}-filelist
-echo "%doc COPYING"          >> %{name}-%{version}-filelist
+rm -rf %{buildroot}
+(cd root; find . -depth -print | cpio -dump %{buildroot})
+%{genfilelist} %{buildroot} > %{name}-%{version}-filelist
 
-%clean
-rm -rf $RPM_BUILD_ROOT
 
-%files -f %{name}-%{version}-%{release}-filelist
+%files -f %{name}-%{version}-filelist
 %defattr(0644,root,root)
+%dir %{_nseventsdir}/%{name}-update
+%doc COPYING
 
 %changelog
 * Tue Sep 29 2015 Davide Principi <davide.principi@nethesis.it> - 1.1.1-1
