@@ -1,0 +1,8 @@
+/var/log/iaxmodem/* {
+    notifempty
+    missingok
+    su root root
+    postrotate
+        /bin/systemctl restart iaxmodem.service > /dev/null 2> /dev/null || true
+    endscript
+}
