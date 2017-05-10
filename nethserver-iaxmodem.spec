@@ -1,6 +1,6 @@
 Summary: NethServer module to configure IAX modems
 Name: nethserver-iaxmodem
-Version: 1.2.0
+Version: 1.2.1
 Release: 1%{?dist}
 License: GPL
 Group: Networking/Daemons
@@ -42,6 +42,10 @@ rm -rf %{buildroot}
 %doc COPYING
 
 %changelog
+* Wed May 10 2017 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.1-1
+- Upgrade from NS 6 via backup and restore - NethServer/dev#5234
+- Add logrotate configuration
+
 * Thu Jul 07 2016 Stefano Fancello <stefano.fancello@nethesis.it> - 1.2.0-1
 - First NS7 release
 
