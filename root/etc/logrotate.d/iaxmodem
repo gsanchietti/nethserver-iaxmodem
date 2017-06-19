@@ -2,6 +2,7 @@
     notifempty
     missingok
     su root root
+    sharedscripts
     postrotate
         /bin/systemctl restart iaxmodem.service > /dev/null 2> /dev/null || true
     endscript
