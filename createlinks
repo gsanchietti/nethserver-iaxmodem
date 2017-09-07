@@ -11,6 +11,7 @@ use File::Path;
 my $event = "nethserver-iaxmodem-update";
 
 event_actions($event, 'initialize-default-databases' => '00');
+event_actions($event, 'nethserver-iaxmodem-conf' => '20');
 
 event_services($event, 'iaxmodem' => 'restart');
 
