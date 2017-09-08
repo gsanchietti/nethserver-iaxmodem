@@ -1,6 +1,6 @@
 Summary: NethServer module to configure IAX modems
 Name: nethserver-iaxmodem
-Version: 1.2.2
+Version: 1.2.3
 Release: 1%{?dist}
 License: GPL
 Group: Networking/Daemons
@@ -42,6 +42,9 @@ rm -rf %{buildroot}
 %doc COPYING
 
 %changelog
+* Fri Sep 08 2017 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.3-1
+- IAX modems: faxgetty not started after reboot - Bug NethServer/dev#5344
+
 * Thu Jul 06 2017 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.2-1
 - IAXModem: bad logrotate configuration - Bug NethServer/dev#5317
 
