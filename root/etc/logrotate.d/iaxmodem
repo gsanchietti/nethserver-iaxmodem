@@ -1,4 +1,5 @@
 /var/log/iaxmodem/* {
+    olddir /var/log/iaxmodem/old
     notifempty
     missingok
     su root root
