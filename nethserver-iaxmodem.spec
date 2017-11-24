@@ -29,11 +29,13 @@ NethServer module to configure IAX modems
 %build
 %{makedocs}
 perl createlinks
+mkdir -p root/var/log/iaxmodem/old
 
 %install
 rm -rf %{buildroot}
 (cd root; find . -depth -print | cpio -dump %{buildroot})
-%{genfilelist} %{buildroot} > %{name}-%{version}-filelist
+%{genfilelist} %{buildroot} \
+--dir /var/log/iaxmodem/old 'attr(0640,root,root)' > %{name}-%{version}-filelist
 
 
 %files -f %{name}-%{version}-filelist
