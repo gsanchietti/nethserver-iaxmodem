@@ -1,6 +1,6 @@
 Summary: NethServer module to configure IAX modems
 Name: nethserver-iaxmodem
-Version: 1.2.4
+Version: 1.2.5
 Release: 1%{?dist}
 License: GPL
 Group: Networking/Daemons
@@ -44,6 +44,9 @@ rm -rf %{buildroot}
 %doc COPYING
 
 %changelog
+* Thu Aug 09 2018 Davide Principi <davide.principi@nethesis.it> - 1.2.5-1
+- Enhancement: (un)mask password fields - NethServer/dev#5554
+
 * Mon Nov 27 2017 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.4-1
 - iaxmodem: logrotate failure - NethServer/dev#5387
 
