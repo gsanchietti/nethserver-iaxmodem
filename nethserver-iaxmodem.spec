@@ -34,12 +34,16 @@ mkdir -p root/var/log/iaxmodem/old
 %install
 rm -rf %{buildroot}
 (cd root; find . -depth -print | cpio -dump %{buildroot})
+install -v -m 644 -D %{name}.json %{buildroot}/usr/share/cockpit/nethserver/applications/%{name}.json
+install -v -m 644 -D ui/public/logo.png %{buildroot}/usr/share/cockpit/%{name}/logo.png
+install -v -m 644 -D ui/public/manifest.json %{buildroot}/usr/share/cockpit/%{name}/manifest.json
+install -v -m 755 -D api/read %{buildroot}/usr/libexec/nethserver/api/%{name}/read
 %{genfilelist} %{buildroot} \
 --dir /var/log/iaxmodem/old 'attr(0640,root,root)' > %{name}-%{version}-filelist
 
 
 %files -f %{name}-%{version}-filelist
-%defattr(0644,root,root)
+%defattr(-,root,root)
 %dir %{_nseventsdir}/%{name}-update
 %doc COPYING
 

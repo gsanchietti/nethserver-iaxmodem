@@ -1,0 +1,26 @@
+{
+  "id": "nethserver-iaxmodem",
+  "name": "IAXmodem",
+  "summary": "Provides IAXmodem for NethServer",
+  "description": "Provides IAXmodem for NethServer",
+  "url": "",
+  "homepage": "https://github.com/NethServer/nethserver-iaxmodem",
+  "provides": ["nethserver-iaxmodem"],
+  "release": {
+    "version": "1.0.0"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/NethServer/dev/issues"
+  },
+  "author": {
+    "name": "Edoardo Spadoni",
+    "url": "https://github.com/NethServer/nethserver-iaxmodem",
+    "email": "edoardo.spadoni@nethesis.it"
+  },
+  "infoapi": {
+    "path": "nethserver-iaxmodem/read"
+  },
+  "icon": "logo.png",
+  "external": true
+}
