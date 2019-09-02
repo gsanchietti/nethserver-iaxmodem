@@ -29,6 +29,7 @@ NethServer module to configure IAX modems
 %build
 %{makedocs}
 perl createlinks
+sed -i 's/_RELEASE_/%{version}/' %{name}.json
 mkdir -p root/var/log/iaxmodem/old
 
 %install
